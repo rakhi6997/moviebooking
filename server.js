@@ -2,8 +2,8 @@ var express = require('express'),
   http = require('http'),
   fs = require('fs'),
   path = require('path'),
-
   cors = require("cors");
+  bodyParser = require("body-parser");
 
 const PORT = 3000;
 
@@ -14,6 +14,11 @@ var corsOptions = {
   };
   
   app.use(cors(corsOptions));
+  // parse requests of content-type - application/json
+app.use(bodyParser.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
   
 const db = require("./models");
 db.mongoose
@@ -52,7 +57,7 @@ app.get("/", (req, res) => {
   require("./routes/movie.routes")(app);
   require("./routes/artist.routes")(app);
   require("./routes/genre.routes")(app);
-  // require("./routes/user.routes")(app) 
+  require("./routes/user.routes")(app) 
 
 app.listen(9000, function () {
     console.log("express has started on port ", PORT);
